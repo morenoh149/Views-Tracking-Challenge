@@ -19,6 +19,13 @@ curl -i -X POST http://localhost:5001/sirocodingchallenges/us-central1/recording
  -H 'Content-Type: application/json' \
  -d '{"viewerId": "Jake", "recordingId": "recordingA"}'
 ```
+verify the counts are incremented
+- test the endpoint with another unique viewer
+```
+curl -i -X POST http://localhost:5001/sirocodingchallenges/us-central1/recordingViews \
+ -H 'Content-Type: application/json' \
+ -d '{"viewerId": "Joe", "recordingId": "recordingA"}'
+```
 
 ### Prerequisites:
 - Node, if you don't have it, you can install it from https://nodejs.org/en/download/

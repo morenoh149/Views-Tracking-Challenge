@@ -42,7 +42,7 @@ export const recordingViews = functions.https.onRequest(async (request, response
       // posts should have viewerId and recordingId
       if (!viewerId || !recordingId) {
         response.status(400).send("Missing arguments");
-        return 
+        return;
       }
 
       await trackRecordingView(viewerId, recordingId);

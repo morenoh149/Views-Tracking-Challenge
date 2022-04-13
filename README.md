@@ -1,5 +1,25 @@
 # Views-Tracking-Challenge
 
+### Running
+- navigate to the functions directory and install dependencies with
+```
+cd functions && npm i
+```
+- initiate the emulator from the functions directory with
+```
+npm run serve
+```
+- test argument validation
+```
+curl -i -X POST http://localhost:5001/sirocodingchallenges/us-central1/recordingViews
+```
+- test the endpoint with curl
+```
+curl -i -X POST http://localhost:5001/sirocodingchallenges/us-central1/recordingViews \
+ -H 'Content-Type: application/json' \
+ -d '{"viewerId": "Jake", "recordingId": "recordingA"}'
+```
+
 ### Prerequisites:
 - Node, if you don't have it, you can install it from https://nodejs.org/en/download/
 

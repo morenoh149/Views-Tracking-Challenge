@@ -14,25 +14,49 @@ export interface Recording {
 }
 
 export interface User {
-    id: string; // mathes both the user's document id
-    uniqueRecordingViewCount: number; // sum of all recording views
+  id: string; // matches both the user's document id
+  uniqueRecordingViewCount: number; // sum of all recording views
+}
+
+export interface UserRecording {
+  viewerId: string; // matches both the user's document id
+  recordingId: number; // sum of all recording views
 }
 
 export enum Collections {
     Users = "Users",
-    Recordings = "Recordings"
+    Recordings = "Recordings",
+    UserRecordings = "UserRecordings"
 }
 
 export async function trackRecordingView(viewerId: string, recordingId: string): Promise<void> {
-  // TODO: implement this function
-
   // logs can be viewed in the firebase emulator ui
   functions.logger.debug("viewerId: ", viewerId);
   functions.logger.debug("recordingId: ", recordingId);
 
-
+  // TODO: implement this function
+  await db.collection("UserRecordings").doc(`${viewerId}_${recordingId}`).set({viewerId, recordingId});
+  const user = await db.collection("Users").doc(viewerId).get();
+  const recording = await db.collection("Recordings").doc(recordingId).get();
+  if (user.exists) {
+    const userData = user.data()!;
+    functions.logger.debug("user exists", userData);
+    await db.collection("Users").doc(viewerId).set({
+      id: userData.id,
+      uniqueRecordingViewCount: userData.uniqueRecordingViewCount+1
+    });
+  }
+  if (recording.exists) {
+    const recordingData = recording.data()!;
+    functions.logger.debug("recording exists", recordingData);
+    await db.collection("Recordings").doc(recordingId).set({
+      id: recordingData.id,
+      creatorId: recordingData.creatorId,
+      uniqueViewCount: recordingData.uniqueViewCount+1
+    });
+  }
+ 
   // ATTN: the rest of the code in this file is only here to show how firebase works
-
   // read from a document
   const documentSnapshot = await db.collection("collection").doc("doc").get();
   if (documentSnapshot.exists) {
@@ -41,7 +65,6 @@ export async function trackRecordingView(viewerId: string, recordingId: string):
   } else {
     functions.logger.debug("it didn't exist");
   }
-
 
   // write to a document using set or update
   // set overwrites existing data and creates new documents if necessary

@@ -21,7 +21,6 @@ export const db = admin.firestore();
 // assumes the request has been authenticated, the caller has the required permissions
 export const recordingViews = functions.https.onRequest(async (request, response) => {
   response.set("Access-Control-Allow-Origin", "*");
-  response.set("Access-Control-Allow-Origin", "*");
   response.set("Access-Control-Allow-Methods", "POST");
   response.set("Access-Control-Allow-Headers", "Content-Type");
   if (request.method === "POST") {
@@ -40,6 +39,11 @@ export const recordingViews = functions.https.onRequest(async (request, response
         3. Send a 400 response and return if the request is invalid
             response.status(400).send();
         */
+      // posts should have viewerId and recordingId
+      if (!viewerId || !recordingId) {
+        response.status(400).send("Missing arguments");
+        return 
+      }
 
       await trackRecordingView(viewerId, recordingId);
       // it worked!

@@ -8,3 +8,18 @@ List each case below in plain english with it's expected result.
 For example...
 Case: user a views user b's recording x for the first time
 Expected Result: etc etc
+
+Case: As Joe when I view recordingA for the first time
+Result: recordingA's count goes to 1
+
+Case: As Joe when I view recordingA for the 2nd time
+Result: recordingA's count remains 1
+
+Case: As Jake when I view recordingA for the 1st time
+Result: recordingA's count becomes 2
+
+Case: As Jake when I view recordingC for the 1st time
+Result: the api returns an error saying recordingC doesn't exist
+
+Case: As Harry when I view recordingA for the 1st time
+Result: the api returns an error saying user Harry doesn't exist
